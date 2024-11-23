@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb
+    ports:
+      - "27017:27017" # เชื่อมพอร์ต MongoDB
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin # ตั้งค่า username
+      MONGO_INITDB_ROOT_PASSWORD: 123456 # ตั้งค่า password
+    volumes:
+      - mongodb_data:/data/db # Mount สำหรับข้อมูล MongoDB
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081" # เชื่อมพอร์ต UI ของ Mongo Express
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+      ME_CONFIG_MONGODB_SERVER: mongodb
+
+volumes:
+  mongodb_data:
